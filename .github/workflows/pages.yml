@@ -1,0 +1,49 @@
+# Builds gamja, soju's web client, at a pinned commit and publishes it on
+# GitHub Pages, unchanged and without a config.json, so a link names the
+# bouncer: https://trout-irc.github.io/?server=wss://IP:8443/socket
+name: pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+env:
+  GAMJA_COMMIT: 59ed8b13efadc4753efc29afb8e9437bd3df3875
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          git clone https://codeberg.org/emersion/gamja.git
+          git -C gamja checkout "$GAMJA_COMMIT"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - working-directory: gamja
+        run: |
+          npm clean-install --include=dev
+          npm run build
+      # gamja is AGPL: its license, and where this build's source is.
+      - run: |
+          cp gamja/LICENSE gamja/dist/LICENSE.txt
+          sed "s/GAMJA_COMMIT/$GAMJA_COMMIT/g" SOURCE.txt > gamja/dist/SOURCE.txt
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: gamja/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

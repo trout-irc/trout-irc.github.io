@@ -1,0 +1,7 @@
+This is gamja, soju's web IRC client, by Simon Ser and contributors, under the
+GNU Affero General Public License v3 (LICENSE.txt). It is built unchanged from:
+
+  https://codeberg.org/emersion/gamja/src/commit/GAMJA_COMMIT
+
+by the workflow in https://github.com/trout-irc/trout-irc.github.io, for trout
+(https://github.com/MaxRenaud/trout) users to reach their own bouncers.
