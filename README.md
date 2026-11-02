@@ -7,8 +7,8 @@ any browser:
 
     https://trout-irc.github.io/?server=wss://<bouncer>:8443/socket
 
-trout's Tools > Connect a Phone shows the link. The bouncer needs a
-certificate browsers trust (trout's Bouncers > Server > Certificate) and
+trout's Bouncer > Connect a Phone shows the link. The bouncer needs a
+certificate browsers trust (trout's Bouncer > Settings > Server) and
 `http-origin trout-irc.github.io` in its soju config, which trout's setup adds.
 Nothing is stored here: gamja talks to the bouncer straight from your browser.
 
