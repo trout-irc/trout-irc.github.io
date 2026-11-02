@@ -12,5 +12,10 @@ certificate browsers trust (trout's Bouncers > Server > Certificate) and
 `http-origin trout-irc.github.io` in its soju config, which trout's setup adds.
 Nothing is stored here: gamja talks to the bouncer straight from your browser.
 
+`goguma.html` is trout's own: Connect a Phone's QR code opens
+`https://trout-irc.github.io/goguma#ircs://...`, since a phone's camera opens
+any https link but does nothing with an ircs:// one unless Goguma is
+installed. It shows a button that opens Goguma and where to get it.
+
 gamja is AGPL-3.0 (see SOURCE.txt in the published site); the commit is in
 `.github/workflows/pages.yml`.

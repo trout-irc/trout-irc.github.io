@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Open in Goguma</title>
+<!--
+  trout's Connect a Phone QR code points here, with the bouncer's ircs://
+  link after the #: a phone's camera opens any https link, but shows
+  nothing for ircs:// unless Goguma is installed. Browsers never send what
+  follows the # to a server, and this page loads nothing else.
+-->
+<style>
+  :root { --bg: #f6f6f3; --fg: #1d1d1b; --muted: #5e5e58; --card: #fff; --line: #dcdcd4; --accent: #1f5fbf; --on-accent: #fff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #161615; --fg: #ecece8; --muted: #a2a29a; --card: #212120; --line: #3a3a37; --accent: #6ea0f0; --on-accent: #0d1a2e; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.5 system-ui, -apple-system, sans-serif; }
+  main { max-width: 30rem; margin: 0 auto; padding: 2rem 16px 3rem; }
+  h1 { font-size: 1.5rem; margin: 0 0 .5rem; }
+  p { margin: .5rem 0; }
+  .muted { color: var(--muted); font-size: .9rem; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin: 1.25rem 0; }
+  .open { display: block; text-align: center; background: var(--accent); color: var(--on-accent); text-decoration: none; font-weight: 600; padding: .9rem; border-radius: 10px; margin-top: .75rem; }
+  dl { display: grid; grid-template-columns: auto 1fr; gap: .25rem .75rem; margin: 0; }
+  dt { color: var(--muted); }
+  dd { margin: 0; overflow-wrap: anywhere; }
+  ul { padding-left: 1.2rem; margin: .5rem 0; }
+  a { color: var(--accent); }
+  [hidden] { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <section id="ok" hidden>
+    <h1>Open your bouncer in Goguma</h1>
+    <div class="card">
+      <dl>
+        <dt>Bouncer</dt><dd id="host"></dd>
+        <dt>User</dt><dd id="user"></dd>
+        <dt>Password</dt><dd id="pw"></dd>
+      </dl>
+      <a class="open" id="open">Open in Goguma</a>
+    </div>
+    <h2 style="font-size:1.1rem">No Goguma yet?</h2>
+    <p>Goguma is a phone IRC client made for this kind of bouncer, with push notifications. Get it, then come back to this page and tap the button.</p>
+    <ul>
+      <li><a href="https://apps.apple.com/app/goguma-irc/id6470394620">App Store</a> (iPhone)</li>
+      <li><a href="https://play.google.com/store/apps/details?id=fr.emersion.goguma.play">Google Play</a> or <a href="https://f-droid.org/packages/fr.emersion.goguma/">F-Droid</a> (Android)</li>
+    </ul>
+    <p class="muted">The bouncer's details are in this page's link after the #, which browsers never send to a server; this page stores nothing.</p>
+  </section>
+  <section id="bad" hidden>
+    <h1>Open in Goguma</h1>
+    <p>This page opens an IRC bouncer in Goguma, from the QR code in <a href="https://github.com/MaxRenaud/trout">trout</a>'s Tools &gt; Connect a Phone. This link has no bouncer in it.</p>
+  </section>
+</main>
+<script>
+  // The link is used as it came (already percent-encoded by trout), and
+  // only if it's an IRC one.
+  const link = location.hash.slice(1);
+  let u = null;
+  if (/^ircs?:\/\//i.test(link)) {
+    try { u = new URL(link); } catch (e) {}
+  }
+  if (u && u.hostname) {
+    document.getElementById("open").href = link;
+    document.getElementById("host").textContent = u.host;
+    document.getElementById("user").textContent = decodeURIComponent(u.username) || "(Goguma asks)";
+    document.getElementById("pw").textContent = u.password ? "in the link" : "Goguma asks";
+    document.getElementById("ok").hidden = false;
+  } else {
+    document.getElementById("bad").hidden = false;
+  }
+</script>
+</body>
+</html>
